@@ -2,6 +2,32 @@ import os
 import datetime
 
 def deploy_to_friends():
+    print("[*] Mengambil akun terbaru...")
+    
+    # Perintah untuk mengambil 5 akun Trojan terbaik
+    # Kita arahkan ke file my_accounts.txt yang ada di folder home
+    os.system('grep "trojan://" ~/my_accounts.txt | head -n 5 > config.txt')
+    
+    # Audit Keamanan: Cek apakah file kosong atau tidak
+    if os.path.getsize("config.txt") == 0:
+        print("[!] Warning: Tidak ada akun ditemukan! Coba scrape dulu.")
+        return
+
+    waktu = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    
+    print("[*] Mengunggah ke GitHub...")
+    os.system("git add config.txt")
+    os.system(f'git commit -m "Network Update {waktu}"')
+    os.system("git push origin main")
+    
+    print(f"\n[+] BERHASIL! Server sudah diperbarui pada {waktu}")
+
+if __name__ == "__main__":
+    deploy_to_friends()
+import os
+import datetime
+
+def deploy_to_friends():
     print("[*] Memulai Audit Keamanan Akun...")
     
     # 1. Ambil 5 akun Trojan terbaik dari hasil scraping kamu sebelumnya
